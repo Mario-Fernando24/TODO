@@ -133,7 +133,7 @@ class _HomePageState extends State<HomePage> {
                     onPrimary: Colors.white,
                     padding: EdgeInsets.symmetric(horizontal: 20.0),
                   ),
-                   onPressed: () {
+                   onPressed: () async{
                    if(titleController.text.length>0 && descriptionController.text.length>0 && statusController.text.length>0 && dateController.text.length>0 ){
                      
                       final taskService = Provider.of<TaskService>(context, listen: false);
@@ -142,7 +142,8 @@ class _HomePageState extends State<HomePage> {
                       FocusScope.of(context).unfocus();
                       Navigator.of(context).pop();
                       Task task= Task(uidUser:authService.getUser()!.uid, title: titleController.text, description: descriptionController.text, status:Constants.completado==statusController.text? true: false, time: dateController.text);
-                      taskService.createTask(task);
+                      await  taskService.createTask(task);
+                      showToasMessage(context, 'Tarea agregada correctamente', Colors.blue);
 
                     }else{
   

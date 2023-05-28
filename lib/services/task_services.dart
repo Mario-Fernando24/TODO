@@ -7,15 +7,13 @@ class TaskService with ChangeNotifier{
   
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  Future createTask(Task task) async{
+  Future<void> createTask(Task task) async{
 
-      try {
-
-        firestore.collection('Task').doc(task.uidUser).set(task.toJson());
-        
-      } catch (e) {
-        print(' Problema de conexion ${e.toString()}');
-      }
+        try {
+          return firestore.collection('Task').doc().set(task.toJson());
+        } catch (error) {
+          print(error);
+        }
 
   }
   
