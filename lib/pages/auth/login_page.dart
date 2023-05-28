@@ -83,6 +83,7 @@ class __FormState extends State<_Form> {
                 ButtonGlobal(
                   text: 'Ingresar',
                   onPressed: authService.autenticando==true? null:() async {
+                      FocusScope.of(context).unfocus();
                       await authService.login(emailController.text.trim(), passwordController.text.trim());
                       if(authService.isSignedIn()){
                         Navigator.pushReplacementNamed(context, Constants.homePage);
