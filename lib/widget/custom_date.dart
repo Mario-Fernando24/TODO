@@ -34,7 +34,7 @@ class _CustomDateState extends State<CustomDate> {
               borderRadius: BorderRadius.circular(30),
               boxShadow: <BoxShadow>[
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
+                    color: Colors.black.withOpacity(0.2),
                     offset: Offset(0,5),
                     blurRadius: 5
                   )

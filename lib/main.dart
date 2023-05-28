@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/routes/routes.dart';
 import 'package:todo/services/auth_services.dart';
+import 'package:todo/services/task_services.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  
   
   runApp(MyApp());
 }
@@ -21,9 +23,11 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     
+    
     return MultiProvider(
       providers: [
         ChangeNotifierProvider( create: ( _ )=>AuthService() ),
+        ChangeNotifierProvider( create: ( _ )=>TaskService() ),
       ],
      child: MaterialApp(
         debugShowCheckedModeBanner: false,

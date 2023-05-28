@@ -7,4 +7,7 @@ class Constants{
   static String registerPage = 'register';
   static String homePage = 'home';
 
+  static String pendiente = 'pendiente';
+  static String completado = 'completado';
+
 }

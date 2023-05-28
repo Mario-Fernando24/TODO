@@ -1,11 +1,11 @@
 import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/constants/constants.dart';
+import 'package:todo/helpers/show_toas_message.dart';
 import 'package:todo/models/task.dart';
 import 'package:todo/services/auth_services.dart';
+import 'package:todo/services/task_services.dart';
 import 'package:todo/widget/custom_date.dart';
 import 'package:todo/widget/custom_form.dart';
 import 'package:todo/widget/custom_input.dart';
@@ -71,18 +71,21 @@ class _HomePageState extends State<HomePage> {
 
   addNewTask(){
 
-    final titleController = new TextEditingController();
-    final descriptionController = new TextEditingController();
-    final statusController = new TextEditingController();
-    final dateController = new TextEditingController();
-    const String _selectedOption = 'pendiente';
-    const List<String> _options = ['pendiente', 'completado'];
+        final titleController = new TextEditingController();
+        final descriptionController = new TextEditingController();
+        final statusController = new TextEditingController();
+        final dateController = new TextEditingController();
+        final String _selectedOption = Constants.pendiente;
+        final List<String> _options = [Constants.pendiente, Constants.completado];
 
         return  showDialog(
           context: context, 
           builder: (context){
             return AlertDialog(
-              title: Text('Nueva tarea'),
+               shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+              title: Text('Nueva tarea', style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),),
               content: SingleChildScrollView(
                 child: Column(
                   children: [
@@ -112,29 +115,43 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               actions: [
-                MaterialButton(
-                  child: Text('Cancelar'),
-                  elevation: 5,
-                  textColor: Colors.red[100],
+
+                ElevatedButton(
                   onPressed: ()=>Navigator.pop(context),
+                  child: Text('Cancelar'),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.red[300],
+                    onPrimary: Colors.white,
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
                   ),
+                ),
 
-                MaterialButton(
-                  elevation: 5,
-                  textColor: Colors.blue[100],
-                  child: Text('Publicar'),
-                  onPressed: (){
-                     FocusScope.of(context).unfocus();
-                     Navigator.of(context).pop();
-                    print('==========================================================');
-                    print(titleController.text.toString());
-                    print(descriptionController.text.toString());
-                    print(statusController.text.toString());
-                    print(dateController.text.toString());
-                    print('==========================================================');
+                ElevatedButton(
+                child: Text('Publicar'),
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.blue[300],
+                    onPrimary: Colors.white,
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  ),
+                   onPressed: () {
+                   if(titleController.text.length>0 && descriptionController.text.length>0 && statusController.text.length>0 && dateController.text.length>0 ){
+                     
+                      final taskService = Provider.of<TaskService>(context, listen: false);
+                      final authService = Provider.of<AuthService>(context, listen: false);
 
+                      FocusScope.of(context).unfocus();
+                      Navigator.of(context).pop();
+                      Task task= Task(uidUser:authService.getUser()!.uid, title: titleController.text, description: descriptionController.text, status:Constants.completado==statusController.text? true: false, time: dateController.text);
+                      taskService.createTask(task);
+
+                    }else{
+  
+                      showToasMessage(context, 'Todos los campos son obligatorios', Colors.black);
+                    }
+
+                    
                   },
-                )  
+                ),
               ],
             );
           },  

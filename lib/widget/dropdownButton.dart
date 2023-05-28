@@ -6,7 +6,6 @@ class CustomDropDownButtom extends StatefulWidget {
    String selectedOption;
   final List<String> option;
   final TextEditingController statusController;
-  final TextInputType keyboardType;
 
    CustomDropDownButtom({
         super.key, 
@@ -14,7 +13,6 @@ class CustomDropDownButtom extends StatefulWidget {
         required this.selectedOption, 
         required this.statusController, 
         required this.option,
-         this.keyboardType = TextInputType.text, 
       });
 
   @override
@@ -33,7 +31,7 @@ class _CustomDropDownButtomState extends State<CustomDropDownButtom> {
               borderRadius: BorderRadius.circular(30),
               boxShadow: <BoxShadow>[
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
+                    color: Colors.black.withOpacity(0.2),
                     offset: Offset(0,5),
                     blurRadius: 5
                   )
@@ -42,19 +40,23 @@ class _CustomDropDownButtomState extends State<CustomDropDownButtom> {
 
              child: DropdownButton<String>(
               value: widget.selectedOption,
+              icon: const Icon(Icons.arrow_downward),
+              elevation: 16,
+              style: const TextStyle(fontSize: 20, color: Colors.black54),
+              underline: Container(),
               items: widget.option.map((String option) {
                 return DropdownMenuItem<String>(
                   value: option,
-                  child: Text(option),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(option+'              '),
+                  ),
                 );
               }).toList(),
               onChanged: (String? value) {
                  setState(() {
                   widget.statusController.text= value!;
                   widget.selectedOption= value!;
-                  print('======================================================');
-                  print(value);
-                  print('======================================================');
                 });
               },
             ),
