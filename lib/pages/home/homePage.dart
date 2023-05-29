@@ -20,18 +20,24 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 }
-
 class _HomePageState extends State<HomePage> {
+
+@override
+    void initState() {
+      super.initState();
+      final taskService = Provider.of<TaskService>(context, listen: false);  
+      taskService.getInfoUser();
+    }
+
   @override
   Widget build(BuildContext context) {
     
-
-    final authService = Provider.of<AuthService>(context);
-    final taskService = Provider.of<TaskService>(context);  
+    final authService = Provider.of<AuthService>(context, listen: false);
+    final taskService = Provider.of<TaskService>(context, listen: false);  
 
     return  Scaffold(
       appBar: AppBar(
-        title: Text(authService.getUser()!.email!, style: TextStyle(color: Colors.black54),),
+        title: Text(authService.getUser()!.email.toString(), style: TextStyle(color: Colors.black54),),
         elevation: 1,
         backgroundColor: Colors.white,
         leading: IconButton(
@@ -46,7 +52,7 @@ class _HomePageState extends State<HomePage> {
                   padding: EdgeInsets.only(right: 20),
                   child: CircleAvatar(
                       radius: 17,
-                  child: Text(authService.getUser()!.email!.substring(0,2)),
+                  child: Text(authService.getUser()!.email!.substring(0,2) ?? ''),
               ),
             )
           ],
@@ -150,8 +156,6 @@ class _HomePageState extends State<HomePage> {
           },  
         );
    }
-
-
 }
 
 class Body extends StatelessWidget {
@@ -165,7 +169,7 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context, listen: false);
-
+   
     return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
     stream: taskService.listenToCollection(authService.getUser()!.uid),
     builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
@@ -198,15 +202,26 @@ class Body extends StatelessWidget {
 }
 
 
-class ListUsuario extends StatelessWidget {
+class ListUsuario extends StatefulWidget {
 
   const ListUsuario({required this.usuario}) ;
 
   final Task usuario;
 
   @override
-  Widget build(BuildContext context) {
+  State<ListUsuario> createState() => _ListUsuarioState();
+}
 
+class _ListUsuarioState extends State<ListUsuario> {
+
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    final taskService = Provider.of<TaskService>(context, listen: true);  
+    
+  
         return Container(
             margin: const EdgeInsets.only(left: 20,right: 30,bottom: 4,top: 5),
             
@@ -218,7 +233,7 @@ class ListUsuario extends StatelessWidget {
                   child: Row(
                     children: [
                       CircleAvatar(
-                        child: Text(usuario.title!.substring(0,2)),
+                        child: Text(widget.usuario.title!.substring(0,2)),
                       ),
                       Container(
                         padding: const EdgeInsets.only(left: 10),
@@ -227,7 +242,7 @@ class ListUsuario extends StatelessWidget {
                             children: [
                               Row(
                                 children: [
-                                  Text('Mario Muñoz',style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                                  Text(taskService.userModelo!.name ?? '',style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
                                     const SizedBox(width: 10),
                                     Container(
                                     width: 10,
@@ -239,17 +254,17 @@ class ListUsuario extends StatelessWidget {
                                   )
                                 ],
                               ),
-                              Text('@mariomunoz',style: const TextStyle(fontSize: 12)),
+                              Text(taskService.userModelo!.email ?? '',style: const TextStyle(fontSize: 12)),
                             ],
                           ),
                       ),
 
                       Container(
-                        margin: EdgeInsets.only(left: MediaQuery.of(context).size.width*0.37),
+                        margin: EdgeInsets.only(left: MediaQuery.of(context).size.width*0.30),
                         child: GestureDetector(
                           child:  Icon(Icons.more_vert),
                           onTap: () {
-                             optionMenu(context, usuario);
+                             optionMenu(context, widget.usuario);
                           },
                           )
                         )
@@ -257,15 +272,15 @@ class ListUsuario extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 5),
-                Text('${usuario.title!} ', style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 14)),
+                Text('${widget.usuario.title!} ', style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 14)),
                 const SizedBox(height: 8),
-                Text(usuario.description!, style: const TextStyle(fontWeight: FontWeight.w300, fontSize: 12)),
+                Text(widget.usuario.description!, style: const TextStyle(fontWeight: FontWeight.w300, fontSize: 12)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text('${usuario.time}',style: const TextStyle(fontWeight: FontWeight.w300, fontSize: 12)),
+                    Text('${widget.usuario.time}',style: const TextStyle(fontWeight: FontWeight.w300, fontSize: 12)),
                     VerticalDivider(),
-                   usuario.status==false
+                   widget.usuario.status==false
                     ? Icon(Icons.pending, size: 25, color: Colors.red[200],)
                     : Icon(Icons.assignment_turned_in_rounded, size: 25, color: Colors.blue[200],)
                   ],
@@ -275,7 +290,6 @@ class ListUsuario extends StatelessWidget {
             ),
         );
    }
-
 
     optionMenu(BuildContext context, Task task){
 
@@ -292,7 +306,7 @@ class ListUsuario extends StatelessWidget {
               child: Text('Completar'),
               onPressed: ()async{
                 Navigator.pop(context);
-                await taskServicee.updateTaskStatus(usuario.uid?? '');
+                await taskServicee.updateTaskStatus(widget.usuario.uid?? '');
                  // ignore: use_build_context_synchronously
                  showToasMessage(context, 'Tarea completada correctamente', Colors.blue);
               }
@@ -302,7 +316,7 @@ class ListUsuario extends StatelessWidget {
               child: Text('Eliminar'),
               onPressed: () async{
                 Navigator.pop(context);
-                 taskServicee.removeTask(usuario.uid?? '');
+                 taskServicee.removeTask(widget.usuario.uid?? '');
                  showToasMessage(context, 'Tarea eliminada correctamente', Colors.red);
               },
               ),

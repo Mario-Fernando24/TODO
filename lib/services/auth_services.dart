@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:todo/helpers/preferencia.dart';
 
 class AuthService with ChangeNotifier{
   
@@ -13,6 +14,8 @@ class AuthService with ChangeNotifier{
 
     bool get autenticando => this._autenticando;
     String get respuesta => this._respuesta;
+
+  get uid => null;
 
     set autenticando(bool valor){
       this._autenticando = valor;
@@ -34,8 +37,7 @@ class AuthService with ChangeNotifier{
 
     User? getUser() {
     return auth.currentUser;
-    }
-
+    } 
 
       Future login(String email, String password) async {
           
@@ -46,7 +48,6 @@ class AuthService with ChangeNotifier{
           UserCredential userCred = await auth.signInWithEmailAndPassword(
             email: email, password: password);
             autenticando = false;
-          // if succesfull leave auth screen and go to homepage
 
         } on FirebaseAuthException catch (e) {
             autenticando = false;
@@ -127,4 +128,5 @@ class AuthService with ChangeNotifier{
     return Future.wait([auth.signOut()]);
   }
 
+  
 }
