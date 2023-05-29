@@ -21,10 +21,14 @@ class TaskService with ChangeNotifier{
         }
   }
 
-
-  Stream<QuerySnapshot<Map<String, dynamic>>> listenToCollection() {
-     return firestore.collection('Task').snapshots();
-  }
+  Stream<QuerySnapshot<Map<String, dynamic>>> listenToCollection(String idUser) {
+  return FirebaseFirestore.instance
+      .collection('Task')
+       .where('uidUser', isEqualTo: idUser)
+      .orderBy('status', descending: false)
+      .orderBy('time', descending: true)
+      .snapshots();
+}
 
   Future<void> removeTask(String uid) async{
 

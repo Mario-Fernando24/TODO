@@ -164,8 +164,10 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context, listen: false);
+
     return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-    stream: taskService.listenToCollection(),
+    stream: taskService.listenToCollection(authService.getUser()!.uid),
     builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
       if (snapshot.hasError) {
         return Text('Error: ${snapshot.error}');
@@ -191,7 +193,7 @@ class Body extends StatelessWidget {
          },
        );
     },
-     );
+   );
   }
 }
 
@@ -224,7 +226,6 @@ class ListUsuario extends StatelessWidget {
                           Column(
                             children: [
                               Row(
-                                
                                 children: [
                                   Text('Mario Muñoz',style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
                                     const SizedBox(width: 10),
