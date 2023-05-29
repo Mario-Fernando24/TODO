@@ -49,7 +49,7 @@ class _CustomDropDownButtomState extends State<CustomDropDownButtom> {
                   value: option,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(option+'              '),
+                    child: Text(option+'               '),
                   ),
                 );
               }).toList(),

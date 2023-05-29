@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/constants/constants.dart';
+import 'package:todo/helpers/show_alert.dart';
 import 'package:todo/helpers/show_toas_message.dart';
 import 'package:todo/models/task.dart';
 import 'package:todo/services/auth_services.dart';
@@ -37,7 +38,7 @@ class _HomePageState extends State<HomePage> {
 
     return  Scaffold(
       appBar: AppBar(
-        title: Text(authService.getUser()!.email.toString(), style: TextStyle(color: Colors.black54),),
+        title: Text(authService.getEmail(), style: TextStyle(color: Colors.black54),),
         elevation: 1,
         backgroundColor: Colors.white,
         leading: IconButton(
@@ -214,17 +215,12 @@ class ListUsuario extends StatefulWidget {
 
 class _ListUsuarioState extends State<ListUsuario> {
 
-
-
-
   @override
   Widget build(BuildContext context) {
     final taskService = Provider.of<TaskService>(context, listen: true);  
     
-  
         return Container(
             margin: const EdgeInsets.only(left: 20,right: 30,bottom: 4,top: 5),
-            
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -272,19 +268,27 @@ class _ListUsuarioState extends State<ListUsuario> {
                   ),
                 ),
                 const SizedBox(height: 5),
-                Text('${widget.usuario.title!} ', style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 14)),
+                Text('${widget.usuario.title!} ', style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 15)),
                 const SizedBox(height: 8),
                 Text(widget.usuario.description!, style: const TextStyle(fontWeight: FontWeight.w300, fontSize: 12)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
+                      InkWell(
+                        onTap: () {showAlert(context, 'Traducido', widget.usuario!.description!);},
+                        child: Text('Traducir',style: TextStyle(decoration: TextDecoration.underline,fontSize: 12)),
+                      ),
+                     const VerticalDivider(),
                     Text('${widget.usuario.time}',style: const TextStyle(fontWeight: FontWeight.w300, fontSize: 12)),
-                    VerticalDivider(),
+                     const VerticalDivider(),
                    widget.usuario.status==false
                     ? Icon(Icons.pending, size: 25, color: Colors.red[200],)
-                    : Icon(Icons.assignment_turned_in_rounded, size: 25, color: Colors.blue[200],)
+                    : Icon(Icons.assignment_turned_in_rounded, size: 25, color: Colors.blue[200],),
+
                   ],
+                  
                 ),
+                
                 const Divider()
               ],
             ),

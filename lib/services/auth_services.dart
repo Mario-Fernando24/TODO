@@ -39,6 +39,12 @@ class AuthService with ChangeNotifier{
     return auth.currentUser;
     } 
 
+    String getEmail(){
+      List<String> email = auth.currentUser!.email!.split('@');
+      return email[0];
+
+    }
+
       Future login(String email, String password) async {
           
         autenticando = true;
