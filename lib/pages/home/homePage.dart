@@ -275,8 +275,10 @@ class _ListUsuarioState extends State<ListUsuario> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                       InkWell(
-                        onTap: () {showAlert(context, 'Traducido', widget.usuario!.description!);},
-                        child: Text('Traducir',style: TextStyle(decoration: TextDecoration.underline,fontSize: 12)),
+                        onTap: ()async {
+                          await taskService.translateText(widget.usuario.description.toString());
+                          showAlert(context, 'Tradución',taskService.traductionn );},
+                        child: Text('Ver tradución',style: TextStyle(decoration: TextDecoration.underline,fontSize: 12)),
                       ),
                      const VerticalDivider(),
                     Text('${widget.usuario.time}',style: const TextStyle(fontWeight: FontWeight.w300, fontSize: 12)),

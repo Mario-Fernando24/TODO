@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:todo/helpers/preferencia.dart';
 import 'package:todo/models/task.dart';
 import 'package:todo/services/auth_services.dart';
+import 'package:translator/translator.dart';
 
 import '../models/users.dart';
 
@@ -18,6 +19,12 @@ class TaskService with ChangeNotifier{
   List<Task> _lisTask = [];
   StreamSubscription<DocumentSnapshot> ?_usersInfoSuscription;
   UserM ?userModelo;
+      String _traductionn = '';
+    String get traductionn => this._traductionn;
+set traductionn(String valor){
+      this._traductionn = valor;
+      notifyListeners();
+    }
   
   Future<void> cancelSubcription()async{
     _usersInfoSuscription!.cancel();
@@ -60,6 +67,13 @@ class TaskService with ChangeNotifier{
       notifyListeners();
 
   }
+
+  Future translateText(String data) async {
+      final translator = GoogleTranslator();
+      final translation = await translator.translate(data, to: 'en');
+      traductionn=translation.toString();
+      notifyListeners();
+}
 
  
 }
