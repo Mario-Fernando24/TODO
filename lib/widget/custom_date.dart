@@ -71,7 +71,7 @@ class _CustomDateState extends State<CustomDate> {
         int year = picked.year;
         int mth = picked.month;
         int day = picked.day;
-        _fecha = '${day}/${mth}/${year}';
+        _fecha = '${day}-${mth}-${year}';
          widget.inputControllerFecha.text =_fecha;
       });
     }
