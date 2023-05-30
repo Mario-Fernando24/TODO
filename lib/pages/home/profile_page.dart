@@ -25,6 +25,12 @@ class _ProfilePageState extends State<ProfilePage> {
 
 
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text('Perfil', style: TextStyle(color: Colors.black54),),
+        elevation: 1,
+        backgroundColor: Colors.white,
+      ),
       body: Stack(
         children: [
         _backgruoundCover(context),
