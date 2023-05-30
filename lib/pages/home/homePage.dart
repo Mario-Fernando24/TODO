@@ -38,6 +38,7 @@ class _HomePageState extends State<HomePage> {
 
     return  Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(authService.getEmail(), style: TextStyle(color: Colors.black54),),
         elevation: 1,
         backgroundColor: Colors.white,
@@ -174,30 +175,28 @@ class Body extends StatelessWidget {
     return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
     stream: taskService.listenToCollection(authService.getUser()!.uid),
     builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-      if (snapshot.hasError) {
-        return Text('Error: ${snapshot.error}');
-      }
+          if (snapshot.connectionState == ConnectionState.waiting) {
 
-      if(!snapshot.hasData || snapshot.data!.docs.isEmpty){
-            return const Center(
-             child: Text('No tiene tareas disponibles', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-           );
-      }
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return const Center(
-             child: CircularProgressIndicator(),
-           );
-      }
-      final documentos = snapshot.data!.docs;
-      final listaModelos = documentos.map((doc) => Task.fromJson(doc.data())).toList();
-      return ListView.builder(
-         itemCount: listaModelos.length,
-         itemBuilder: (BuildContext context, int index) {
-           final modelo = listaModelos[index];
-           return  ListUsuario(usuario: modelo);
-         },
-       );
-    },
+          return Center(child: CircularProgressIndicator());
+
+          } else if (snapshot.hasError) {
+
+          return Text('Error al cargar los datos');
+
+          } else {
+
+          final documentos = snapshot.data!.docs;
+          final listaModelos = documentos.map((doc) => Task.fromJson(doc.data())).toList();
+
+            return  ListView.builder(
+            itemCount: listaModelos.length,
+            itemBuilder: (BuildContext context, int index) {
+              final modelo = listaModelos[index];
+              return  ListUsuario(usuario: modelo);
+             },
+          );
+       }
+     },
    );
   }
 }
@@ -206,7 +205,6 @@ class Body extends StatelessWidget {
 class ListUsuario extends StatefulWidget {
 
   const ListUsuario({required this.usuario}) ;
-
   final Task usuario;
 
   @override
@@ -256,7 +254,7 @@ class _ListUsuarioState extends State<ListUsuario> {
                       ),
 
                       Container(
-                        margin: EdgeInsets.only(left: MediaQuery.of(context).size.width*0.30),
+                        padding: EdgeInsets.only(left: MediaQuery.of(context).size.width*0.30),
                         child: GestureDetector(
                           child:  Icon(Icons.more_vert),
                           onTap: () {
@@ -276,9 +274,9 @@ class _ListUsuarioState extends State<ListUsuario> {
                   children: [
                       InkWell(
                         onTap: ()async {
-                          await taskService.translateText(widget.usuario.description.toString());
-                          showAlert(context, 'Tradución',taskService.traductionn );},
-                        child: Text('Ver tradución',style: TextStyle(decoration: TextDecoration.underline,fontSize: 12)),
+                          await taskService.translateText(widget.usuario.description.toString());                          
+                          showAlert(context, 'Translation',taskService.traductionn, 'ready');},
+                        child: Text('Ver tradución',style: TextStyle(decoration: TextDecoration.underline,fontSize: 12, color: Colors.blue[200])),
                       ),
                      const VerticalDivider(),
                     Text('${widget.usuario.time}',style: const TextStyle(fontWeight: FontWeight.w300, fontSize: 12)),
@@ -286,7 +284,6 @@ class _ListUsuarioState extends State<ListUsuario> {
                    widget.usuario.status==false
                     ? Icon(Icons.pending, size: 25, color: Colors.red[200],)
                     : Icon(Icons.assignment_turned_in_rounded, size: 25, color: Colors.blue[200],),
-
                   ],
                   
                 ),

@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-showAlert(BuildContext context, String title, String subtitle){
+showAlert(BuildContext context, String title, String subtitle, String button){
 
     if(!Platform.isAndroid){
 
@@ -13,7 +13,7 @@ showAlert(BuildContext context, String title, String subtitle){
           content: Text(subtitle),
           actions: [
             MaterialButton(
-              child: Text('Ok'),
+              child: Text(button),
               elevation: 5,
               textColor: Colors.blue,
               onPressed:()=>Navigator.pop(context)
@@ -31,7 +31,7 @@ showAlert(BuildContext context, String title, String subtitle){
               actions: [
                   CupertinoDialogAction(
                     isDestructiveAction: true,
-                  child: Text('Ok', style: TextStyle(color: Colors.blue),),
+                  child: Text(button, style: TextStyle(color: Colors.blue),),
                   onPressed: ()=>Navigator.pop(context),
                   )
               ],

@@ -96,13 +96,13 @@ class __FormState extends State<_Form> {
                       
                      await authService.createUser(nameController.text.trim(), emailController.text.trim(), passwordController.text.trim());
                      if(authService.isSignedIn()){
-                      Navigator.pushReplacementNamed(context, Constants.homePage);
+                      Navigator.pushReplacementNamed(context, Constants.menuPage);
                      }else{
-                        showAlert(context, 'Mensaje', authService.respuesta);
+                        showAlert(context, 'Mensaje', authService.respuesta, 'Ok');
                      }
 
                     }else{
-                        showAlert(context, 'Mensaje', validate['sms']);
+                        showAlert(context, 'Mensaje', validate['sms'],'Ok');
                     }
                    }
                 ) 

@@ -28,7 +28,7 @@ class LoadingPage extends StatelessWidget {
     bool autenticado = await auth.isSignedIn();
 
     if(autenticado==true){
-      Navigator.pushReplacementNamed(context, Constants.homePage);
+      Navigator.pushReplacementNamed(context, Constants.menuPage);
     }else{
       Navigator.pushReplacementNamed(context, Constants.loginPage);
 

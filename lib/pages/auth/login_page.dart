@@ -86,10 +86,10 @@ class __FormState extends State<_Form> {
                       FocusScope.of(context).unfocus();
                       await authService.login(emailController.text.trim(), passwordController.text.trim());
                       if(authService.isSignedIn()){
-                        Navigator.pushReplacementNamed(context, Constants.homePage);
+                        Navigator.pushReplacementNamed(context, Constants.menuPage);
                       }else{
                       // ignore: use_build_context_synchronously
-                      showAlert(context, 'Mensaje', authService.respuesta);
+                      showAlert(context, 'Mensaje', authService.respuesta, 'Ok');
 
                       }
                   }
