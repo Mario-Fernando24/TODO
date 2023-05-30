@@ -25,7 +25,7 @@
 
 ## Diseño de la Interfaz de Usuario
 
- ![Prototipo alta fidelidad](https://github.com/Mario-Fernando24/TODO/tree/main/assets/r5.png)
+ ![Prototipo alta fidelidad](https://github.com/Mario-Fernando24/TODO/tree/main/assets/image1.jpeg)
 
   ![Prototipo alta fidelidad](https://github.com/Mario-Fernando24/TODO/tree/main/assetsg/image2.jpeg)
 
