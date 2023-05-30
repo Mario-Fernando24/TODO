@@ -226,8 +226,13 @@ class _ListUsuarioState extends State<ListUsuario> {
                   padding: const EdgeInsets.all(5),
                   child: Row(
                     children: [
-                      CircleAvatar(
-                        child: Text(widget.usuario.title!.substring(0,2)),
+                      ClipOval(
+                        child: Image.asset(
+                          'assets/r5.png',
+                          fit: BoxFit.cover,
+                          width: 45,
+                          height: 45,
+                        ),
                       ),
                       Container(
                         padding: const EdgeInsets.only(left: 10),
@@ -236,7 +241,10 @@ class _ListUsuarioState extends State<ListUsuario> {
                             children: [
                               Row(
                                 children: [
-                                  Text(taskService.userModelo!.name ?? '',style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                                  Text(taskService.userModelo!.name! ?? '',
+                                  //  overflow: TextOverflow.ellipsis, // Agrega puntos suspensivos (...) si el texto supera el límite
+                                  //  maxLines: 1, // Limita el texto a una línea
+                                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
                                     const SizedBox(width: 10),
                                     Container(
                                     width: 10,

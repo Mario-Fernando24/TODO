@@ -113,13 +113,14 @@ class AuthService with ChangeNotifier{
 
     var resp = {};
 
-    if(name.isEmpty){
-        resp = {'status':false,'sms': 'El nombre debe ser obligatorio'};
+    if(name.isEmpty || name.length<=6){
+        resp = {'status':false,'sms': 'El nombre debe ser obligatorio y mayor a 6 caracter'};
       return resp;
-    }else if(email.isEmpty){
+    }else if(email.isEmpty || email.length<=6){
        resp = {'status': false,'sms': 'Debe ser un correo electronico valido'};
       return resp;
-    }else if(password.length<6 || password.isEmpty){
+    }
+    else if(password.length<6 || password.isEmpty){
        resp = {'status': false,'sms': 'Debe tener 6 caracteres o mas'};
       return resp;
     }else{
