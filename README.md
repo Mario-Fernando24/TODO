@@ -23,6 +23,12 @@
 3. Elegir donde desea correr la app (eemulador o dispositivo fisico)
 4. Correr el proyecto: `flutter run`
 
+## Usuario de prueba 
+
+1. Correo: `mario@gmail.com`
+2. Contraseña: `123456`
+3. Registrese si desea probar con un usuario nuevo
+
 ## Diseño de la Interfaz de Usuario
 
  ![Prototipo alta fidelidad](https://github.com/Mario-Fernando24/TODO/tree/main/assets/image1.jpg)
